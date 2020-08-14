@@ -15,29 +15,9 @@ exports.up = function(knex) {
     tasks.text("description").notNullable();
     tasks.text("notes").notNullable();
     tasks.boolean("completed").notNullable().defaultTo(false);
-  })
-  .createTable("project", tbl => {
-    tbl.increments();
-    tbl
-      .string("project_name")
-      .unsigned()
-      .notNullable()
-      .references("name")
-      .inTable("projects")
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE');
-    tbl
-      .string("project_description")
-      .unsigned()
-      .notNullable()
-      .references("description")
-      .inTable("projects")
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE');
   });
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists("project")
-    .dropTableIfExists("tasks");
+  return knex.schema.dropTableIfExists("tasks");
 };
