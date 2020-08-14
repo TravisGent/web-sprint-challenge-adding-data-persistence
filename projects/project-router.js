@@ -1,0 +1,41 @@
+const express = require("express");
+const router = express.Router();
+
+const Projects = require('./project-model.js');
+
+router.get('/', (req, res) => {
+  Projects.find()
+    .then(project => {
+      res.json(project);
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Failed to get project' });
+    });
+});
+
+router.post('/', (req, res) => {
+  const projectData = req.body;
+  
+  Projects.add(projectData)
+    .then(project => {
+      res.status(201).json(project);
+    })
+    .catch (err => {
+      res.status(500).json({ message: 'Failed to create new project', error: `${err}` });
+    });
+});
+
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+
+  Projects.findById(id)
+    .then(project => {
+      res.status(200).json({ data: project })
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ errorMessage: "We could not get the data" });
+    });
+});
+
+module.exports = router;
